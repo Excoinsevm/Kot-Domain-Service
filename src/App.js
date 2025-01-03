@@ -8,7 +8,7 @@ import { ReactComponent as Coder } from './assets/coder.svg';
 import { ReactComponent as PolygonIcon } from './assets/polygon.svg';
 import { ReactComponent as EthIcon } from './assets/ethereum.svg';
 
-const TWITTER_HANDLE = 'kharioki';
+const TWITTER_HANDLE = 'TrigonEVM';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 // domain to mint
