@@ -1,5 +1,5 @@
 const networks = {
-  "0x1": "Mainnet",
+  "0x3a1": "Trigon",
   "0x3": "Ropsten",
   "0x2a": "Kovan",
   "0x4": "Rinkeby",
