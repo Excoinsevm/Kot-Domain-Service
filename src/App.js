@@ -57,7 +57,7 @@ function App() {
               method: 'wallet_addEthereumChain',
               params: [
                 {
-                  chainId: '0x3a1',
+                  chainId: '929',
                   chainName: 'Trigon',
                   rpcUrls: ['https://rpc.trigonevm.space/'],
                   nativeCurrency: {
