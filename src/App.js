@@ -13,7 +13,7 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 // domain to mint
 const tld = '.trigon';
-const CONTRACT_ADDRESS = '0x6Fe73b73ba20B86239A779fd5e872DCeEE809675';
+const CONTRACT_ADDRESS = '0xa1c575342591f6d8fc79a26cBaDDc8485ca8eE52';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState('');
