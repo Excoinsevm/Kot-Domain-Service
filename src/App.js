@@ -156,7 +156,7 @@ function App() {
     setLoading(true);
 
     // Calculate price based on length of domain: 3chars = 0.5 MATIC ? 4chars = 0.3 : 0.1, etc
-    const price = domain.length === 3 ? '0.5' : domain.length === 4 ? '0.3' : '0.1';
+    const price = domain.length === 3 ? '100' : domain.length === 4 ? '50' : '25';
     console.log('Minting domain ', domain, 'with price ', price);
 
     try {
@@ -225,7 +225,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (network === 'Polygon Mumbai Testnet') {
+    if (network === 'Trigon') {
       fetchMints();
     }
   }, [currentAccount, network]);
@@ -241,7 +241,7 @@ function App() {
   );
 
   const renderInput = () => {
-    if (network !== 'Polygon Mumbai Testnet') {
+    if (network !== 'Trigon') {
       return (
         <div className="flex flex-col items-center justify-center">
           <p className="text-purple-500 text-md font-bold right-4 mx-4">
