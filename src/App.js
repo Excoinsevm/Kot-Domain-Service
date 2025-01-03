@@ -12,8 +12,8 @@ const TWITTER_HANDLE = 'kharioki';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 // domain to mint
-const tld = '.kot';
-const CONTRACT_ADDRESS = '0x2aC881DFF6d20929D75cF0Ab8e9D52574949F6a5';
+const tld = '.trigon';
+const CONTRACT_ADDRESS = '0xa1c575342591f6d8fc79a26cBaDDc8485ca8eE52';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState('');
@@ -46,7 +46,7 @@ function App() {
         // Try to switch to the Mumbai testnet
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: '0x13881' }], // Check networks.js for hexadecimal network ids
+          params: [{ chainId: '0x3a1' }], // Check networks.js for hexadecimal network ids
         });
       } catch (error) {
         // This error code means that the chain we want has not been added to MetaMask
@@ -57,15 +57,15 @@ function App() {
               method: 'wallet_addEthereumChain',
               params: [
                 {
-                  chainId: '0x13881',
-                  chainName: 'Polygon Mumbai Testnet',
-                  rpcUrls: ['https://rpc-mumbai.maticvigil.com/'],
+                  chainId: '0x3a1',
+                  chainName: 'Trigon',
+                  rpcUrls: ['https://rpc.trigonevm.space/'],
                   nativeCurrency: {
-                    name: "Mumbai Matic",
-                    symbol: "MATIC",
+                    name: "Trigon",
+                    symbol: "TRI",
                     decimals: 18
                   },
-                  blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
+                  blockExplorerUrls: ["https://explorer-trigon-52af1phymr.t.conduit.xyz/"]
                 },
               ],
             });
@@ -172,13 +172,13 @@ function App() {
         const receipt = await tx.wait();
         // check if transaction was successful
         if (receipt.status === 1) {
-          console.log('Domain minted successfully! https://mumbai.polygonscan.com/tx/' + tx.hash);
+          console.log('Domain minted successfully! https://explorer-trigon-52af1phymr.t.conduit.xyz/tx/' + tx.hash);
 
           // Set the record for the domain
           tx = await contract.setRecord(domain, record);
           await tx.wait();
 
-          console.log('Record set! https://mumbai.polygonscan.com/tx/' + tx.hash);
+          console.log('Record set! https://explorer-trigon-52af1phymr.t.conduit.xyz/tx/' + tx.hash);
 
           setTimeout(() => {
             fetchMints();
@@ -211,7 +211,7 @@ function App() {
 
         let tx = await contract.setRecord(domain, record);
         await tx.wait();
-        console.log("Record set https://mumbai.polygonscan.com/tx/" + tx.hash);
+        console.log("Record set https://explorer-trigon-52af1phymr.t.conduit.xyz/tx/" + tx.hash);
 
         fetchMints();
         setRecord('');
@@ -245,7 +245,7 @@ function App() {
       return (
         <div className="flex flex-col items-center justify-center">
           <p className="text-purple-500 text-md font-bold right-4 mx-4">
-            Please connect to the Polygon Mumbai Testnet
+            Please connect to the Trigon Blockchain
           </p>
           <button
             className="flex items-center px-2 mx-2 my-2 rounded-md border-2 border-purple-500 py-2 text-purple-500 hover:text-white hover:bg-purple-700"
