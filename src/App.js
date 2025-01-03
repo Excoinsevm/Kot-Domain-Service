@@ -400,12 +400,12 @@ function App() {
           <div className="flex items-center px-4 mx-4 rounded-md bg-purple-500 py-6 shadow-md">
             <div className="flex flex-col">
               <span className="font-bold md:text-3xl text-xl text-white">
-                Grab your <a href="/" className='underline decoration-yellow-200 text-yellow-200'>.kot</a> domain today!!!
+                Grab your <a href="/" className='underline decoration-yellow-200 text-yellow-200'>.trigon</a> domain today!!!
               </span>
               <p className="text-white text-xs sm:text-sm mt-5 leading-loose">
-                "The domain .kot was inspired by my favorite community
+                "The domain .trigon is the domain name service for the Trigon blockchain
                 <span className='mx-2 before:block before:absolute before:-inset-1 before:-skew-y-2 before:bg-blue-300 relative inline-block'>
-                  <span className='relative text-white font-bold'>Kenyans on Twitter</span>
+                  <span className='relative text-white font-bold'>.trigon on Trigon</span>
                 </span>.
                 It's a domain that I created to help people find their favorite people on Twitter. I hope you enjoy it!"
               </p>
