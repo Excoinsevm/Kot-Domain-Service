@@ -43,7 +43,7 @@ function App() {
   const switchNetwork = async () => {
     if (window.ethereum) {
       try {
-        // Try to switch to the Trigon network
+        // Try to switch to the Mumbai testnet
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0x3a1' }], // Check networks.js for hexadecimal network ids
@@ -57,7 +57,7 @@ function App() {
               method: 'wallet_addEthereumChain',
               params: [
                 {
-                  chainId: '0x3a1',
+                  chainId: '929',
                   chainName: 'Trigon',
                   rpcUrls: ['https://929.rpc.thirdweb.com/'],
                   nativeCurrency: {
@@ -76,6 +76,7 @@ function App() {
         console.log(error);
       }
     } else {
+      // If window.ethereum is not found then MetaMask is not installed
       alert('MetaMask is not installed. Please install it to use this app: https://metamask.io/download.html');
     }
   }
@@ -261,94 +262,191 @@ function App() {
           <input
             className="w-full px-4 py-2 my-4 mx-4 text-xs sm:text-sm focus:outline-none rounded-md border-2 border-purple-500 dark:border-gray-900 dark:text-gray-400 dark:bg-gray-900"
             type="text"
-            placeholder="Domain name (min 3 characters)"
+            placeholder="Domain name(min 3, max 12 chars)"
             value={domain}
             onChange={(e) => setDomain(e.target.value)}
           />
+          <p className="text-purple-500 text-sm sm:text-md font-bold absolute right-4 mx-4">
+            {tld}
+          </p>
+        </div>
+
+        <p className='text-xs sm:text-sm dark:text-gray-400'>Let's set the first record, your twitter handle perhaps. We'll add more records later.</p>
+
+        <div className="flex relative mx-auto w-full md:w-3/4 lg:w-1/2 items-center">
           <input
             className="w-full px-4 py-2 my-4 mx-4 text-xs sm:text-sm focus:outline-none rounded-md border-2 border-purple-500 dark:border-gray-900 dark:text-gray-400 dark:bg-gray-900"
             type="text"
-            placeholder="Set record (Optional)"
+            placeholder="What is your twitter handle? e.g @johndoe"
             value={record}
             onChange={(e) => setRecord(e.target.value)}
           />
-          <div className="flex justify-center">
-            {loading ? (
-              <button
-                className="flex items-center px-4 mx-8 my-4 rounded-md border-2 border-purple-500 py-2 dark:text-white hover:bg-purple-500 cursor-not-allowed"
-                disabled>
-                Loading...
-              </button>
-            ) : (
-              <button
-                className="flex items-center px-4 mx-8 my-4 rounded-md border-2 border-purple-500 py-2 dark:text-white hover:bg-purple-500"
-                onClick={editing ? updateDomain : mintDomain}>
-                {editing ? 'Update Domain' : 'Mint Domain'}
-              </button>
-            )}
-          </div>
         </div>
+
+        {loading && (
+          <div className="flex justify-center">
+            <svg role="status" className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+            </svg>
+          </div>
+        )}
+
+        <div className="flex justify-center">
+          {editing ? (
+            <div className="flex justify-center">
+              <button
+                className="flex items-center px-4 mx-8 my-4 rounded-md border-2 border-purple-500 bg-purple-500 py-2 text-white hover:text-white hover:bg-purple-700"
+                disabled={loading}
+                onClick={updateDomain}>
+                Set record
+              </button>
+              <button
+                className="flex items-center px-4 mx-8 my-4 rounded-md border-2 border-purple-500 bg-purple-500 py-2 text-white hover:text-white hover:bg-purple-700"
+                disabled={loading}
+                onClick={() => setEditing(false)}>
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <button
+              className="flex items-center px-4 mx-8 my-2 rounded-md border-2 border-purple-500 bg-purple-500 text-white hover:text-white hover:bg-purple-700"
+              disabled={loading}
+              onClick={mintDomain}>
+              Mint domain
+            </button>
+          )}
+        </div>
+
+        <p className='text-xs dark:text-gray-400'>
+          Remember your domain is basically an NFT. Hence the "mint" vocabulary...
+        </p>
       </div>
-    );
+    )
   };
 
-  const renderMints = () => {
-    return (
-      <div className="flex flex-col items-center justify-center mx-auto">
-        <h2 className="text-purple-500 font-semibold text-xl mb-4">Your Mints</h2>
-        {mints.length === 0 ? (
-          <p className="text-purple-500 text-md">No domains minted yet.</p>
-        ) : (
-          <ul className="flex flex-wrap justify-center">
-            {mints.map((mint, index) => (
-              <li key={index} className="my-4 mx-6 flex flex-col items-center">
-                <div className="p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600">
-                  <h3 className="text-xl font-semibold text-center">{mint.name}</h3>
-                  <p className="text-md text-center">{mint.record}</p>
-                  <p className="text-sm text-center mt-2">
-                    Owned by: {mint.owner.slice(0, 6)}...{mint.owner.slice(-4)}
-                  </p>
-                  <button
-                    className="text-purple-500 mt-4"
-                    onClick={() => {
-                      setEditing(true);
-                      setDomain(mint.name);
-                      setRecord(mint.record);
-                    }}>
-                    Edit Record
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+  const renderMints = () => (
+    mints.length > 0 ? (
+      <div className="flex flex-col justify-center mt-5 py-4 w-full">
+        <div className="flex mx-4 px-4 my-4">
+          <p className="text-xs sm:text-sm text-gray-500">
+            Here are some cool domains already minted...
+          </p>
+        </div>
+        <div className="flex px-4 overflow-x-scroll pb-10 hide-scroll-bar justify-start py-4 w-full">
+          {mints.map((mint, index) => (
+            <div className="card" key={index}>
+              <p className="text-sm text-purple-400 my-2">
+                {mint.name}{tld}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-400">
+                {mint.record}
+              </p>
+              {mint.owner.toLowerCase() === currentAccount.toLowerCase() ? (
+                <button
+                  className="flex items-center right-0 px-4 mx-4 my-4 py-1 rounded-md border-2 border-purple-500 bg-white text-purple-300 hover:text-white hover:bg-purple-700 dark:border-gray-900 dark:text-gray-400 dark:bg-gray-900"
+                  disabled={loading}
+                  onClick={() => editRecord(mint.name)}>
+                  <p className='text-xs'>Edit</p>
+                  <div className='mx-2 text-xs'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </div>
+                </button>
+              ) : null}
+            </div>
+          ))}
+        </div>
       </div>
-    );
+    ) : (
+      <div className="flex flex-col justify-center mt-5 py-4 w-full">
+        <div className="flex">
+          <p className="text-xs sm:text-sm text-gray-400">
+            No domains minted yet...
+          </p>
+        </div>
+      </div>
+    )
+  );
+
+  const editRecord = (name) => {
+    console.log('Editing record for', name);
+    setEditing(true);
+    setDomain(name);
   };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   return (
-    <div className="App flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 dark:text-white">
-      <div className="flex items-center justify-center my-6">
-        <h1 className="text-4xl font-semibold text-center text-purple-500">
-          Trigon Domain Manager
-        </h1>
-        <a
-          className="text-purple-500 text-md ml-4"
-          href={TWITTER_LINK}
-          target="_blank"
-          rel="noreferrer">
-          @{TWITTER_HANDLE}
-        </a>
-      </div>
-      {currentAccount ? (
-        <div className="flex flex-col items-center justify-center">
-          <p className="text-sm text-center mb-4">Connected to: {currentAccount.slice(0, 6)}...{currentAccount.slice(-4)}</p>
-          {renderInput()}
-          {renderMints()}
+    <div className='flex flex-1 flex-col min-h-screen font-mono text-gray-500'>
+      <nav className='flex justify-between w-full drop-shadow-sm border-b border-purple-50 dark:border-gray-600 dark:bg-gray-800'>
+        <div className='flex justify-between items-center'>
+          <h1 className='text-3xl font-bold p-4 text-purple-500 tracking-wide hover:text-purple-700'>
+            .kot
+          </h1>
         </div>
-      ) : (
-        renderConnectWalletButton()
-      )}
+
+        <div className='flex justify-between items-center h-10 sm:right-4 mt-4'>
+          {network.includes("Polygon") ? <PolygonIcon className='w-4 h-4 sm:w-6 sm:h-6' /> : <EthIcon className='w-4 h-4 sm:w-6 sm:h-6' />}
+          {currentAccount ? <p className='mx-2 sm:mx-4 text-xs sm:text-lg dark:text-gray-300'>Wallet: {currentAccount.slice(0, 6)}...{currentAccount.slice(-4)}</p> : <p className='mx-2 sm:mx-4 text-xs sm:text-lg'>Not connected</p>}
+        </div>
+      </nav>
+
+      <main className='flex flex-col w-full flex-1 sm:px-12 xl:px-24 py-2 sm:py-4 text-center dark:bg-gray-800'>
+        <div className="flex justify-center">
+          <div className="flex items-center px-4 mx-4 rounded-md bg-purple-500 py-6 shadow-md">
+            <div className="flex flex-col">
+              <span className="font-bold md:text-3xl text-xl text-white">
+                Grab your <a href="/" className='underline decoration-yellow-200 text-yellow-200'>.kot</a> domain today!!!
+              </span>
+              <p className="text-white text-xs sm:text-sm mt-5 leading-loose">
+                "The domain .kot was inspired by my favorite community
+                <span className='mx-2 before:block before:absolute before:-inset-1 before:-skew-y-2 before:bg-blue-300 relative inline-block'>
+                  <span className='relative text-white font-bold'>Kenyans on Twitter</span>
+                </span>.
+                It's a domain that I created to help people find their favorite people on Twitter. I hope you enjoy it!"
+              </p>
+              <p className="text-white text-sm text-right mr-4">
+                <a href={TWITTER_LINK} target="_blank" rel='noreferrer' className='text-blue-300 font-bold hover:text-white'>- @{TWITTER_HANDLE}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+        {/**  connect wallet button  */}
+        {!currentAccount && renderConnectWalletButton()}
+        {/**  render input form if an account is connected  */}
+        {currentAccount && renderInput()}
+
+        {/**  render mints if an account is connected  */}
+        {currentAccount && renderMints()}
+
+        <div className="flex justify-center py-4 w-full">
+          <div className="flex flex-col md:flex-row md:justify-between items-center px-4 mx-4 rounded-md py-6">
+            <div className="flex flex-col w-full md:w-1/3 justify-center px-4">
+              <span className="font-bold md:text-md text-sm text-purple-400 tracking-wide">
+                Why add records?
+              </span>
+              <p className='text-xs sm:text-md mt-5 dark:text-gray-400 leading-loose tracking-wide'>
+                The whole point of a domain is to direct people to your place on the internet. You can set the data you want shown on your domain.
+              </p>
+            </div>
+
+            <div className="flex justify-center md:col-span-2">
+              <Coder />
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <footer className="flex items-center justify-center w-full h-8 sm:h-12 border-t border-purple-100 dark:border-gray-600 dark:bg-gray-800">
+        <p className="text-white text-sm">
+          <a href={TWITTER_LINK} target="_blank" rel='noreferrer' className='text-gray-500 font-bold hover:text-purple-500'>- built by @{TWITTER_HANDLE}</a>
+        </p>
+      </footer>
     </div>
   );
 }
