@@ -59,7 +59,7 @@ function App() {
                 {
                   chainId: '929',
                   chainName: 'Trigon',
-                  rpcUrls: ['https://rpc.trigonevm.space/'],
+                  rpcUrls: ['https://929.rpc.thirdweb.com/'],
                   nativeCurrency: {
                     name: "Trigon",
                     symbol: "TRI",
